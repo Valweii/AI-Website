@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <title>AI First Aid Chatbot</title>
+</head>
+<body>
+    <div>
+        <h1>AI First Aid Chatbot</h1>
+    </div>
+    <div>
+        <div id="chat-box"></div>
+    </div>
+    <div id="inp">
+        <input type="text" id="user-input" placeholder="Type your question here..." />
+        <button onclick="sendMessage()" onkeydown="sendMessage()">Send</button>
+    </div>
+</body>
+<script>
+    const chatBox = document.getElementById('chat-box');
+    const userInput = document.getElementById('user-input');
+
+    // Function to append a message to the chat box
+    function appendMessage(sender, text) {
+        const message = document.createElement('div');
+        message.className = 'message ' + sender;
+        message.textContent = (sender === 'user' ? 'You: ' : 'Bot: ') + text;
+        chatBox.appendChild(message);
+        chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+    }
+
+    // Function to send a message to the chatbot
+    async function sendMessage() {
+        const message = userInput.value.trim();
+        if (!message) return
+        appendMessage('user', message);
+        userInput.value = ''
+        try {
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: message })
+            });
+            const data = await response.json();
+            appendMessage('bot', data.response);
+        } catch (error) {
+            appendMessage('bot', 'Error: Unable to communicate with the chatbot.');
+            console.error(error);
+        }
+    }
+
+    var input = document.getElementById("user-input");
+    input.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+    });
+</script>
+</html>
