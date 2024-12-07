@@ -3,3 +3,4 @@ Pillow==9.5.0
 flask
 openai==0.28
 nltk
+tensorflow
