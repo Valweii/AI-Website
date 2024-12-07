@@ -2,3 +2,4 @@ git+https://github.com/MihaMarkic/tflearn.git@fix/is_sequence_missing
 Pillow==9.5.0
 flask
 openai==0.28
+nltk
