@@ -1,5 +1,5 @@
 git+https://github.com/MihaMarkic/tflearn.git@fix/is_sequence_missing
-Pillow
+Pillow==9.5.0
 flask
 openai
 nltk
